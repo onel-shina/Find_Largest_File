@@ -51,7 +51,7 @@ public class LargestFile {
 
         File[] filesArray = filesList.toArray(new File[filesList.size()]); //Converting from ArrayList improved running time
         if (filesArray.length == 0) { //If there are no files in the given directory
-            System.out.printf("No Files were found in: %s", directory);
+            System.out.printf("No Files were found in: %s", directory.toAbsolutePath());
         }
 
         /*

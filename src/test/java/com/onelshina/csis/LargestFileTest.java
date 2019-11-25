@@ -79,7 +79,7 @@ public class LargestFileTest {
 
         setUpStreams();
         assertNull(LargestFile.findLargestFile(directoryOnePath));
-        assertEquals(String.format("No Files were found in: %s", directoryOnePath), outputStream.toString());
+        assertEquals(String.format("No Files were found in: %s", directoryOnePath.toAbsolutePath()), outputStream.toString());
         restoreStreams();
 
         File file1 = new File("TestFile/test.txt");
