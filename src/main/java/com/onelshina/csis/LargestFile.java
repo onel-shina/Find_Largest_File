@@ -41,12 +41,6 @@ public class LargestFile {
      */
 
     protected static File findLargestFile(final Path directory) {
-        File largestFile; //Method will return this variable
-
-        long fileSize = 0;
-        File firstFile = null;
-        File secondFile = null;
-
         ArrayList<File> filesList = findFilesList(directory.toFile()); //Getting an ArrayList of all files
 
         File[] filesArray = filesList.toArray(new File[filesList.size()]); //Converting from ArrayList improved running time
@@ -55,35 +49,30 @@ public class LargestFile {
         }
 
         /*
-        * Algorithm to find the largest file and assign it to firstFile
+        * For loop to find the largest file and assign it to largestFile
+        *
         * If there is another file in the array with same size as firstFile
-        * but it's not equal to the firstFile, assign it to the secondFile
+        * but it's path length is longer than the path length of the previous largestFile
+        * reassign the value of largestFile to the the file with the longer path length
+        *
+        * If another file existed in the array with the same size and path length as the
+        * first found largestFile, then the value of the largestFile will remain unchanged
+        * and the file found first will be returned.
          */
+        File largestFile = null; //Method will return this variable
+        long fileSize = 0; //Size of largestFile
 
         for (File file : filesArray) {
             long fileLength = file.length();
             if (fileLength > fileSize) {
-                firstFile = file;
+                largestFile = file;
                 fileSize = fileLength;
             }
-            if (fileLength == fileSize && !file.equals(firstFile)) {
-                secondFile = file;
-            }
-        }
-
-        if (secondFile == null) { //If there was not two files with same maximum size
-            largestFile = firstFile;
-
-        } else { //If there was two files with the same maximum size
-            int firstFilePathLength = firstFile.toPath().getNameCount(); //Path length of the first file
-            int secondFilePathLength = secondFile.toPath().getNameCount(); //Path length of the second file
-
-            if (firstFilePathLength > secondFilePathLength) {
-                largestFile = firstFile;
-            } else if (firstFilePathLength < secondFilePathLength) {
-                largestFile = secondFile;
-            } else { //If both files have the same path length
-                largestFile = firstFile; //Since firstFile is found before secondFile
+            /*If another file exists with same size as largestFile, but with a longer path
+            *   assign the value of largestFile to the file with longer path
+             */
+            if (fileLength == fileSize && file.toPath().getNameCount() > largestFile.toPath().getNameCount()) {
+                largestFile = file;
             }
         }
         return largestFile;
