@@ -1,6 +1,9 @@
 package com.onelshina.csis;
 
+
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -58,6 +61,13 @@ public class LargestFileTest {
 
     }
 
+    /* To create temporary directories and files for testing
+    * that will be deleted if test fails or if it runs
+    * successfully
+    */
+    @Rule
+    public TemporaryFolder temporary = new TemporaryFolder();
+
 
     /*
     * Testing findLargestFile method of FileDraft class to ensure
@@ -68,10 +78,12 @@ public class LargestFileTest {
      */
     @Test
     public void findLargestFile() throws IOException {
-        File directory1 = new File("TestFile");
-        File directory2 = new File("TestFile/TestFile2");
+        File directory1 = temporary.newFolder("TestDirectory");
+        //Create another directory inside within directory1
+        File directory2 = temporary.newFolder(directory1.getName(), "TestDirectory2");
         Path directoryOnePath = directory1.toPath();
-        directory1.mkdir();
+
+
         directory2.mkdir();
         /*
         Empty Directory
@@ -82,8 +94,7 @@ public class LargestFileTest {
         assertEquals(String.format("No Files were found in: %s", directoryOnePath.toAbsolutePath()), outputStream.toString());
         restoreStreams();
 
-        File file1 = new File("TestFile/test.txt");
-        file1.createNewFile();
+        File file1 = temporary.newFile("TestDirectory/test.txt");
         RandomAccessFile randomAccessFile = new RandomAccessFile(file1, "rw");
         randomAccessFile.setLength(5); //Changing the size of the file
         randomAccessFile.close();
@@ -93,15 +104,12 @@ public class LargestFileTest {
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file1); //Directory with only one File
 
-
-        File file2 = new File("TestFile/TestFile2/test2.txt");
-        file2.createNewFile();
+        File file2 = temporary.newFile("TestDirectory/TestDirectory2/test2.txt");
         randomAccessFile = new RandomAccessFile(file2, "rw");
         randomAccessFile.setLength(5);
         randomAccessFile.close();
 
-        File file3 = new File("TestFile/test3.txt");
-        file3.createNewFile();
+        File file3 = temporary.newFile("TestDirectory/test3.txt");
         randomAccessFile = new RandomAccessFile(file3, "rw");
         randomAccessFile.setLength(4);
         randomAccessFile.close();
@@ -113,8 +121,7 @@ public class LargestFileTest {
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file2);
 
-        File file4 = new File("TestFile/TestFile2/test3.txt");
-        file4.createNewFile();
+        File file4 = temporary.newFile("TestDirectory/TestDirectory2/test3.txt");
         randomAccessFile = new RandomAccessFile(file4, "rw");
         randomAccessFile.setLength(10);
         randomAccessFile.close();
@@ -127,8 +134,7 @@ public class LargestFileTest {
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
 
-        File file5 = new File("TestFile/TestFile2/test4.txt");
-        file5.createNewFile();
+        File file5 = temporary.newFile("TestDirectory/TestDirectory2/test4.txt");
         randomAccessFile = new RandomAccessFile(file5, "rw");
         randomAccessFile.setLength(10);
         randomAccessFile.close();
@@ -141,14 +147,6 @@ public class LargestFileTest {
         file5 - size: 10 - relative path length: 3
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
-
-
-        //Deleting all the directories and files we created for testing//
-        File[] filesToDelete = {file1, file2, file3, file4, file5, directory2, directory1};
-        for (File file : filesToDelete) {
-            file.delete();
-        }
-
     }
 
     /*
