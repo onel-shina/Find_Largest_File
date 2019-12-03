@@ -1,6 +1,5 @@
 package com.onelshina.csis;
 
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -37,7 +36,8 @@ public class LargestFileTest {
      * given directory and its subdirectories
      *
      * @param dir {@link File} the file representing the directory we want to search
-     * @return {@link ArrayList<File>}
+     * @return {@link ArrayList<File>} containing all files within the @param dir {@link File}
+     * and it's subdirectories
      */
 
     @SuppressWarnings({"SameParameterValue", "unchecked"})
@@ -70,25 +70,28 @@ public class LargestFileTest {
 
 
     /*
-    * Testing findLargestFile method of FileDraft class to ensure
+    * Testing findLargestFile method of LargestFile class to ensure
     * that it returns the largest file in the ArrayList
-    * Also test the behavior when two files exist with same size
+    *
+    * Also test the behavior when two files exist with same size,
+    * then the method should return the file with longest path
+    *
     * And when two files have the same size and path length, then
     * The method should return the file we expect to be found first
      */
     @Test
     public void findLargestFile() throws IOException {
         File directory1 = temporary.newFolder("TestDirectory");
-        //Create another directory inside within directory1
+        //Create another directory within directory1
         File directory2 = temporary.newFolder(directory1.getName(), "TestDirectory2");
         Path directoryOnePath = directory1.toPath();
 
 
-        directory2.mkdir();
         /*
-        Empty Directory
+        * Testing the output of System.out if the directory doesn't contain any files.
+        *
+        * Empty Directory
          */
-
         setUpStreams();
         assertNull(LargestFile.findLargestFile(directoryOnePath));
         assertEquals(String.format("No Files were found in: %s", directoryOnePath.toAbsolutePath()), outputStream.toString());
@@ -149,9 +152,7 @@ public class LargestFileTest {
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
     }
 
-    /*
-     * To test the output of System.out
-     * */
+    //To test out the result of System.out
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     private final PrintStream printStream = System.out;
     private void setUpStreams() {
