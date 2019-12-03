@@ -3,7 +3,7 @@
 
 ------------
 
-###### I also used Breadth Search Algorithm in my test code.
+###### I also used Breadth First Search Algorithm in my test code.
 
 [![](http://mishadoff.com/images/dfs/binary_tree_search.png)](http://mishadoff.com/images/dfs/binary_tree_search.png)
 
