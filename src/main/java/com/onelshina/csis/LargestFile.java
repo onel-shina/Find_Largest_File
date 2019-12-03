@@ -71,7 +71,7 @@ public class LargestFile {
             /*If another file exists with same size as largestFile, but with a longer path
             *   assign the value of largestFile to the file with longer path
              */
-            if (fileLength == fileSize && file.toPath().getNameCount() > largestFile.toPath().getNameCount()) {
+            else if (fileLength == fileSize && file.toPath().getNameCount() > largestFile.toPath().getNameCount()) {
                 largestFile = file;
             }
         }
