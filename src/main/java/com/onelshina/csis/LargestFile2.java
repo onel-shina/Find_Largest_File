@@ -35,19 +35,18 @@ public class LargestFile2 {
      * @return {@link File} the more extreme of the two given files.
      */
 
-    protected static File extreme(final File file1, final File file2){
+    protected static File extreme(final File file1, final File file2) {
         File largestFile;
-        if(file1.toPath().getNameCount() > file2.toPath().getNameCount()){
+        if (file1.toPath().getNameCount() > file2.toPath().getNameCount()) {
             largestFile = file1;
-        }
-        else if(file1.toPath().getNameCount() < file2.toPath().getNameCount()){
+        } else if (file1.toPath().getNameCount() < file2.toPath().getNameCount()) {
             largestFile = file2;
-        }
-        else {
+        } else {
             largestFile = file1;
         }
         return largestFile;
     }
+
     /**
      * DFS for the most extreme file, starting the search at a given directory path.
      *
@@ -60,31 +59,29 @@ public class LargestFile2 {
     }
 
 
-    private static File largestFile(final File inputFile, final File largestFileFound, final long largestFileFoundSize) {
+    private static File largestFile(final File inputDirectory, final File largestFileFound, final long largestFileFoundSize) {
         File largestFile = largestFileFound;
         long largestFileSize = largestFileFoundSize;
-        File comparisonFile = null;
-        File[] files = inputFile.listFiles();
+        File[] files = inputDirectory.listFiles();
         if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    comparisonFile = file;
-                } else if (file.isDirectory()) {
-                    comparisonFile = largestFile(file, largestFile, largestFileSize);
+            for (File currentFile : files) {
+                if (currentFile.isDirectory()) {
+                    currentFile = largestFile(currentFile, largestFile, largestFileSize);
                 }
-                if (comparisonFile != null) {
-                    long comparisonFileLength = comparisonFile.length();
-                    if (comparisonFileLength > largestFileSize) {
-                        largestFile = comparisonFile;
-                        largestFileSize = comparisonFileLength;
-                    } else if (comparisonFileLength == largestFileSize) {
-                        largestFile = extreme(largestFile, comparisonFile);
+                if (currentFile.isFile()) {
+                    long currentFileLength = currentFile.length();
+                    if (currentFileLength > largestFileSize) {
+                        largestFile = currentFile;
+                        largestFileSize = currentFileLength;
+                    } else if (currentFileLength == largestFileSize) {
+                        largestFile = extreme(largestFile, currentFile);
                     }
                 }
             }
         }
-        if (largestFile == null){
-            System.out.printf("No Files were found in: %s", inputFile.toPath().toAbsolutePath());
+
+        if (largestFile == null) {
+            System.out.printf("No Files were found in: %s", inputDirectory.toPath().toAbsolutePath());
         }
         return largestFile;
     }
