@@ -98,7 +98,7 @@ public class LargestFile {
                 if (file.isFile()) {
                     files.add(file);
                 }
-                if (file.isDirectory()) {
+                else if (file.isDirectory()) {
                     files.addAll(findFilesList(file));
                 }
             }
