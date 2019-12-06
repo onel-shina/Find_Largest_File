@@ -84,16 +84,12 @@ public class LargestFile2 {
                 }
                 if (currentFile != null && currentFile.isFile()) {
                     long currentFileLength = currentFile.length();
-                    if (currentFileLength > largestFileSize) {
+                    if (currentFileLength > largestFileSize || largestFile == null) {
                         largestFile = currentFile;
                         largestFileSize = currentFileLength;
                     } else if (currentFileLength == largestFileSize) {
-                        if (largestFile != null) {
-                            //Both files passed into extreme method are not null, and have the same size
-                            largestFile = extreme(largestFile, currentFile);
-                        } else {
-                            largestFile = currentFile;
-                        }
+                        //Both files passed into extreme method are not null, and have the same size
+                        largestFile = extreme(largestFile, currentFile);
                     }
                 }
             }
