@@ -5,9 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -32,25 +30,14 @@ public class LargestFile2Test {
         File directory2 = temporary.newFolder(directory1.getName(), "TestDirectory2");
 
         File file1 = temporary.newFile("TestDirectory/test.txt");
-        RandomAccessFile randomAccessFile = new RandomAccessFile(file1, "rw");
-        randomAccessFile.setLength(5); //Changing the size of the file
-        randomAccessFile.close();
-
         File file2 = temporary.newFile("TestDirectory/TestDirectory2/test2.txt");
-        randomAccessFile = new RandomAccessFile(file2, "rw");
-        randomAccessFile.setLength(5); //Changing the size of the file
-        randomAccessFile.close();
-
         File file3 = temporary.newFile("TestDirectory/TestDirectory2/test3.txt");
-        randomAccessFile = new RandomAccessFile(file3, "rw");
-        randomAccessFile.setLength(5); //Changing the size of the file
-        randomAccessFile.close();
 
         //Both same size, file2 has longer path
         Assert.assertEquals(LargestFile2.extreme(file1, file2), file2);
         /*Both same size and path length, but first found file get passed into extreme method first
-        * Therefore, we expect the extreme method to return the first file that was found
-        * Which would be file2 in this case
+         * Therefore, we expect the extreme method to return the first file that was found
+         * Which would be file2 in this case
          */
         Assert.assertEquals(LargestFile2.extreme(file2, file3), file2);
 
@@ -80,8 +67,7 @@ public class LargestFile2Test {
                 if (fileSize > largestFileSize) {
                     largestFile = f;
                     largestFileSize = fileSize;
-                }
-                else if (fileSize == largestFileSize) {
+                } else if (fileSize == largestFileSize) {
                     largestFile = LargestFile2.extreme(largestFile, f);
                 }
             } else if (f.isDirectory()) {
@@ -95,10 +81,96 @@ public class LargestFile2Test {
     }
 
     @Test
-    public void findLargestFile() {
+    public void findLargestFile() throws IOException {
         Path currentRelativePath = Paths.get("").toAbsolutePath().getParent();
         File fileMain = LargestFile2.findLargestFile(currentRelativePath); //Using DFS
         File fileTest = LargestFile2Test.findLargestFileTest(currentRelativePath); //Using BFS
-        Assert.assertEquals(fileMain, fileTest);
+        Assert.assertEquals(fileMain, fileTest); //Largest file found by DFS should be equal to largest file found by BFS
+
+        /* Below are more tests to verify that findLargestFile returns the largest file in a
+            directory and its subdirectories
+         */
+
+        File directory1 = temporary.newFolder("TestDirectory");
+        //Create another directory within directory1
+        File directory2 = temporary.newFolder(directory1.getName(), "TestDirectory2");
+        Path directoryOnePath = directory1.toPath();
+
+
+        /*
+         * Testing the output of System.out if the directory doesn't contain any files.
+         *
+         * Empty Directory
+         */
+        setUpStreams();
+        assertNull(LargestFile.findLargestFile(directoryOnePath));
+        assertEquals(String.format("No Files were found in: %s", directoryOnePath.toAbsolutePath()), outputStream.toString());
+        restoreStreams();
+
+        File file1 = temporary.newFile("TestDirectory/test.txt");
+        RandomAccessFile randomAccessFile = new RandomAccessFile(file1, "rw");
+        randomAccessFile.setLength(5); //Changing the size of the file
+        randomAccessFile.close();
+
+        /* Files in directory:
+        file1 - size: 5 - relative path length: 2
+         */
+        assertEquals(LargestFile.findLargestFile(directoryOnePath), file1); //Directory with only one File
+
+        File file2 = temporary.newFile("TestDirectory/TestDirectory2/test2.txt");
+        randomAccessFile = new RandomAccessFile(file2, "rw");
+        randomAccessFile.setLength(5);
+        randomAccessFile.close();
+
+        File file3 = temporary.newFile("TestDirectory/test3.txt");
+        randomAccessFile = new RandomAccessFile(file3, "rw");
+        randomAccessFile.setLength(4);
+        randomAccessFile.close();
+
+        /* Files in directory:
+        file1 - size: 5 - relative path length: 2
+        file2 - size: 5 - relative path length: 3 (Should be returned, because it has the largest size, and a longer path than file1)
+        file3 - size: 4 - relative path length: 2
+         */
+        assertEquals(LargestFile.findLargestFile(directoryOnePath), file2);
+
+        File file4 = temporary.newFile("TestDirectory/TestDirectory2/test3.txt");
+        randomAccessFile = new RandomAccessFile(file4, "rw");
+        randomAccessFile.setLength(10);
+        randomAccessFile.close();
+
+        /* Files in directory:
+        file1 - size: 5 - relative path length: 2
+        file2 - size: 5 - relative path length: 3
+        file3 - size: 4 - relative path length: 2
+        file4 - size: 10 - relative path length: 3 (Should be returned, because it has the largest size)
+         */
+        assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
+
+        File file5 = temporary.newFile("TestDirectory/TestDirectory2/test4.txt");
+        randomAccessFile = new RandomAccessFile(file5, "rw");
+        randomAccessFile.setLength(10);
+        randomAccessFile.close();
+
+        /* Files in directory:
+        file1 - size: 5 - relative path length: 2
+        file2 - size: 5 - relative path length: 3
+        file3 - size: 4 - relative path length: 2
+        file4 - size: 10 - relative path length: 3 (Should be returned, has the same size and path length as file5, but it should be found first)
+        file5 - size: 10 - relative path length: 3
+         */
+        assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
+    }
+
+    //To test out the result of System.out
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private final PrintStream printStream = System.out;
+
+    private void setUpStreams() {
+        System.setOut(new PrintStream(outputStream));
+    }
+
+    private void restoreStreams() {
+        System.setOut(printStream);
     }
 }

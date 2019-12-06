@@ -15,7 +15,8 @@ public class LargestFile2 {
      *
      * @param args {@link String}[] start location for the largest file search.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
+        long t1 = System.currentTimeMillis();
         final Path path = Paths.get(args.length < 1 ? "." : args[0]);
         final File file = findLargestFile(path);
         if (file != null) {
@@ -30,8 +31,8 @@ public class LargestFile2 {
      * Identifies the more extreem of two given files.
      * Modifying this method allows to search for other extreems, like smallest, oldest, etc.
      *
-     * @param file1 {@link File} 1st file
-     * @param file2 {@link File} 2nd file
+     * @param file1 {@link File} 1st file (file found first)
+     * @param file2 {@link File} 2nd file (file found second)
      * @return {@link File} the more extreme of the two given files.
      */
 
@@ -41,14 +42,14 @@ public class LargestFile2 {
         File largestFile;
 
         /* * *file1 is found by DFS before file2 * * *
-        *
-        * if file1's path length larger or equal to file2's path length
-        * return file1
-        *
-        * if file2's path length larger than file1' path length
-        * return file2
-        *
-        *
+         *
+         * if file1's path length larger or equal to file2's path length
+         * return file1
+         *
+         * if file2's path length larger than file1' path length
+         * return file2
+         *
+         *
          */
         if (fileOnePathLength >= fileTwoPathLength) {
             largestFile = file1;
@@ -59,6 +60,8 @@ public class LargestFile2 {
     }
 
     /**
+     * This method calls {@link #largestFile(File, File, long)}
+     * Passing important initial arguments into this method which contains
      * DFS for the most extreme file, starting the search at a given directory path.
      *
      * @param path {@link Path} path to a directory
@@ -77,15 +80,20 @@ public class LargestFile2 {
         if (files != null) {
             for (File currentFile : files) {
                 if (currentFile.isDirectory()) {
-                    currentFile = largestFile(currentFile, largestFile, largestFileSize);
+                    currentFile = largestFile(currentFile, largestFile, largestFileSize); //Recursive calls
                 }
-                if (currentFile.isFile()) {
+                if (currentFile != null && currentFile.isFile()) {
                     long currentFileLength = currentFile.length();
                     if (currentFileLength > largestFileSize) {
                         largestFile = currentFile;
                         largestFileSize = currentFileLength;
                     } else if (currentFileLength == largestFileSize) {
-                        largestFile = extreme(largestFile, currentFile);
+                        if (largestFile != null) {
+                            //Both files passed into extreme method are not null, and have the same size
+                            largestFile = extreme(largestFile, currentFile);
+                        } else {
+                            largestFile = currentFile;
+                        }
                     }
                 }
             }

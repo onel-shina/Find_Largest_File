@@ -21,7 +21,7 @@ Starting at : /home/onel, the largest file was found here:
 ------------
 
 ##### My repository contains two approaches to this problem:
-###### Main approach is in: LargestFile.java file
-###### Alternative approach is in: LargestFile2.java file
+###### Main approach is in: LargestFile.java file (Faster running time)
+###### Alternative approach is in: LargestFile2.java file (A little bit slower running time)
 
 ------------
