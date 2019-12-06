@@ -97,8 +97,8 @@ public class LargestFile2Test {
     @Test
     public void findLargestFile() {
         Path currentRelativePath = Paths.get("").toAbsolutePath().getParent();
-        File fileMain = LargestFile2.findLargestFile(currentRelativePath);
-        File fileTest = LargestFile2Test.findLargestFileTest(currentRelativePath);
+        File fileMain = LargestFile2.findLargestFile(currentRelativePath); //Using DFS
+        File fileTest = LargestFile2Test.findLargestFileTest(currentRelativePath); //Using BFS
         Assert.assertEquals(fileMain, fileTest);
     }
 }
