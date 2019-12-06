@@ -36,13 +36,24 @@ public class LargestFile2 {
      */
 
     protected static File extreme(final File file1, final File file2) {
+        int fileOnePathLength = file1.toPath().getNameCount();
+        int fileTwoPathLength = file2.toPath().getNameCount();
         File largestFile;
-        if (file1.toPath().getNameCount() > file2.toPath().getNameCount()) {
+
+        /* * *file1 is found by DFS before file2 * * *
+        *
+        * if file1's path length larger or equal to file2's path length
+        * return file1
+        *
+        * if file2's path length larger than file1' path length
+        * return file2
+        *
+        *
+         */
+        if (fileOnePathLength >= fileTwoPathLength) {
             largestFile = file1;
-        } else if (file1.toPath().getNameCount() < file2.toPath().getNameCount()) {
-            largestFile = file2;
         } else {
-            largestFile = file1;
+            largestFile = file2;
         }
         return largestFile;
     }
