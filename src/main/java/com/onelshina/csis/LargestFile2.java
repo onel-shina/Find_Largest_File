@@ -16,7 +16,6 @@ public class LargestFile2 {
      * @param args {@link String}[] start location for the largest file search.
      */
     public static void main(final String[] args) {
-        long t1 = System.currentTimeMillis();
         final Path path = Paths.get(args.length < 1 ? "." : args[0]);
         final File file = findLargestFile(path);
         if (file != null) {
