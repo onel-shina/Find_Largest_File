@@ -31,29 +31,29 @@ public class LargestFile2 {
      * Modifying this method allows to search for other extreems, like smallest, oldest, etc.
      *
      * @param file1 {@link File} 1st file (file found first)
-     * @param file2 {@link File} 2nd file (file found second)
+     * @param file2 {@link File} 2nd file (file found last)
      * @return {@link File} the more extreme of the two given files.
      */
 
     protected static File extreme(final File file1, final File file2) {
-        int fileOnePathLength = file1.toPath().getNameCount();
-        int fileTwoPathLength = file2.toPath().getNameCount();
+        int fileOnePathLength = file1.getAbsolutePath().length();
+        int fileTwoPathLength = file2.getAbsolutePath().length();
         File largestFile;
 
         /* * *file1 is found by DFS before file2 * * *
          *
          * if file1's path length larger or equal to file2's path length
-         * return file1
+         * return file2
          *
          * if file2's path length larger than file1' path length
          * return file2
          *
          *
          */
-        if (fileOnePathLength >= fileTwoPathLength) {
+        if (fileOnePathLength > fileTwoPathLength) {
             largestFile = file1;
         } else {
-            largestFile = file2;
+            largestFile = file2; //Found last and equal path length, or longer path length than file1
         }
         return largestFile;
     }
@@ -88,14 +88,13 @@ public class LargestFile2 {
                         largestFileSize = currentFileLength;
                     } else if (currentFileLength == largestFileSize) {
                         //Both files passed into extreme method are not null, and have the same size
+                        /* largestFile: found first
+                        * currentFile: found last
+                         */
                         largestFile = extreme(largestFile, currentFile);
                     }
                 }
             }
-        }
-
-        if (largestFile == null) {
-            System.out.printf("No Files were found in: %s", inputDirectory.toPath().toAbsolutePath());
         }
         return largestFile;
     }

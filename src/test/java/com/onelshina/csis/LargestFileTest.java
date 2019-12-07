@@ -77,7 +77,7 @@ public class LargestFileTest {
     * then the method should return the file with longest path
     *
     * And when two files have the same size and path length, then
-    * The method should return the file we expect to be found first
+    * The method should return the file we expect to be found the last
      */
     @Test
     public void findLargestFile() throws IOException {
@@ -103,7 +103,7 @@ public class LargestFileTest {
         randomAccessFile.close();
 
         /* Files in directory:
-        file1 - size: 5 - relative path length: 2
+        file1 - size: 5
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file1); //Directory with only one File
 
@@ -118,9 +118,9 @@ public class LargestFileTest {
         randomAccessFile.close();
 
         /* Files in directory:
-        file1 - size: 5 - relative path length: 2
-        file2 - size: 5 - relative path length: 3 (Should be returned, because it has the largest size, and a longer path than file1)
-        file3 - size: 4 - relative path length: 2
+        file1 - size: 5 -
+        file2 - size: 5 - (longest path)
+        file3 - size: 4 -
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file2);
 
@@ -130,10 +130,10 @@ public class LargestFileTest {
         randomAccessFile.close();
 
         /* Files in directory:
-        file1 - size: 5 - relative path length: 2
-        file2 - size: 5 - relative path length: 3
-        file3 - size: 4 - relative path length: 2
-        file4 - size: 10 - relative path length: 3 (Should be returned, because it has the largest size)
+        file1 - size: 5 -
+        file2 - size: 5 -
+        file3 - size: 4 -
+        file4 - size: 10 - (largest size)
          */
         assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
 
@@ -143,13 +143,13 @@ public class LargestFileTest {
         randomAccessFile.close();
 
         /* Files in directory:
-        file1 - size: 5 - relative path length: 2
-        file2 - size: 5 - relative path length: 3
-        file3 - size: 4 - relative path length: 2
-        file4 - size: 10 - relative path length: 3 (Should be returned, has the same size and path length as file5, but it should be found first)
-        file5 - size: 10 - relative path length: 3
+        file1 - size: 5 -
+        file2 - size: 5 -
+        file3 - size: 4 -
+        file4 - size: 10 - (largest size) (equal path length to file5) (found first)
+        file5 - size: 10 - (largest size) (equal path length to file4) (found last)
          */
-        assertEquals(LargestFile.findLargestFile(directoryOnePath), file4);
+        assertEquals(LargestFile.findLargestFile(directoryOnePath), file5);
     }
 
     //To test out the result of System.out
@@ -158,6 +158,7 @@ public class LargestFileTest {
     private void setUpStreams() {
         System.setOut(new PrintStream(outputStream));
     }
-    private void restoreStreams() { System.setOut(printStream);
+    private void restoreStreams() {
+        System.setOut(printStream);
     }
 }
