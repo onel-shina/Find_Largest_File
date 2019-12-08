@@ -150,8 +150,8 @@ public class LargestFile2Test {
         file1 - size: 5 -
         file2 - size: 5 -
         file3 - size: 4 -
-        file4 - size: 10 - (largest size) (equal path length to file5) (found first)
-        file5 - size: 10 - (largest size) (equal path length to file4) (found last)
+        file4 - size: 10 - (largest size) (equal path length to file5)- (found first)
+        file5 - size: 10 - (largest size) (equal path length to file4)- (found last)
          */
         assertEquals(LargestFile2.findLargestFile(directoryOnePath), file5);
     }

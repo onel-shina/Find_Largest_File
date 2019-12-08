@@ -54,7 +54,7 @@ public class LargestFile2 {
         if (fileTwoPathLength >= fileOnePathLength) {
             largestFile = file2;
         } else {
-            largestFile = file1; //Found last and equal path length, or longer path length than file1
+            largestFile = file1;
         }
         return largestFile;
     }
