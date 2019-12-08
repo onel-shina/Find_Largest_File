@@ -40,15 +40,13 @@ public class LargestFile2 {
         int fileTwoPathLength = file2.getAbsolutePath().length();
         File largestFile;
 
-        /* * *file1 is found by DFS before file2 * * *
+        /* * *file1 is found first, file2 is found last* * *
          *
-         * if file1's path length larger or equal to file2's path length
+         * if file1's path length larger than file2's path length
          * return file2
          *
-         * if file2's path length larger than file1' path length
+         * if file2's path length larger or equal to file'1 path length
          * return file2
-         *
-         *
          */
         if (fileOnePathLength > fileTwoPathLength) {
             largestFile = file1;
