@@ -97,12 +97,8 @@ public class LargestFile2Test {
         Path directoryOnePath = directory1.toPath();
 
 
-        /*
-         * Testing the output of System.out if the directory doesn't contain any files.
-         *
-         * Empty Directory
-         */
 
+        //Empty Directory
         assertNull(LargestFile2.findLargestFile(directoryOnePath));
 
         File file1 = temporary.newFile("TestDirectory/test.txt");

@@ -42,16 +42,16 @@ public class LargestFile2 {
 
         /* * *file1 is found first, file2 is found last* * *
          *
-         * if file1's path length larger than file2's path length
+         * if file2's (found last) path length larger or equal to file1's path length
          * return file2
          *
-         * if file2's path length larger or equal to file'1 path length
-         * return file2
+         * if file1's (found first) path length larger than file'2 path length
+         * return file1
          */
-        if (fileOnePathLength > fileTwoPathLength) {
-            largestFile = file1;
+        if (fileTwoPathLength >= fileOnePathLength) {
+            largestFile = file2;
         } else {
-            largestFile = file2; //Found last and equal path length, or longer path length than file1
+            largestFile = file1; //Found last and equal path length, or longer path length than file1
         }
         return largestFile;
     }
@@ -85,9 +85,9 @@ public class LargestFile2 {
                         largestFile = currentFile;
                         largestFileSize = currentFileLength;
                     } else if (currentFileLength == largestFileSize) {
-                        //Both files passed into extreme method are not null, and have the same size
-                        /* largestFile: found first
-                        * currentFile: found last
+                        /* Both files passed into extreme method are not null, and have the same size
+                        *  largestFile: found first
+                        *  currentFile: found last
                          */
                         largestFile = extreme(largestFile, currentFile);
                     }
