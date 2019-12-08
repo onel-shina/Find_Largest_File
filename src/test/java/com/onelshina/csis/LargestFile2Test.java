@@ -156,4 +156,23 @@ public class LargestFile2Test {
         assertEquals(LargestFile2.findLargestFile(directoryOnePath), file5);
     }
 
+    @Test
+    public void main() throws IOException {
+        File directory1 = temporary.newFolder("TestDirectory");
+
+        setUpStreams();
+        assertNull(LargestFile.findLargestFile(directory1.toPath()));
+        assertEquals(String.format("No Files were found in: %s", directory1.getAbsolutePath()), outputStream.toString());
+        restoreStreams();
+    }
+
+    //To test out the result of System.out
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    private final PrintStream printStream = System.out;
+    private void setUpStreams() {
+        System.setOut(new PrintStream(outputStream));
+    }
+    private void restoreStreams() {
+        System.setOut(printStream);
+    }
 }

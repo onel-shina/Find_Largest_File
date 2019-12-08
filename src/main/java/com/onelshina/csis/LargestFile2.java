@@ -24,6 +24,9 @@ public class LargestFile2 {
                     file.getAbsolutePath(),
                     file.length());
         }
+        else {
+            System.out.printf("No Files were found in: %s", path.toAbsolutePath());
+        }
     }
 
     /**
