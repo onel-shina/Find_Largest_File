@@ -34,7 +34,7 @@ public class LargestFile {
      * returns the file with the longest path.
      *
      * If both files that are equal in size have the same path length, it returns the file
-     * that was found first
+     * that was found the last
      *
      * @param directory {@link Path} The directory we want to search.
      * @return {@link File} the largest File based on the criteria mentioned above.
@@ -51,13 +51,13 @@ public class LargestFile {
         /*
         * For loop to find the largest file and assign it to largestFile
         *
-        * If there is another file in the array with same size as firstFile
-        * but it's path length is longer than the path length of the previous largestFile
-        * reassign the value of largestFile to the the file with the longer path length
+        * If there is another file in the array with same size as largestFile
+        * but it's path length is longer or equal to the path length to the largestFile
+        * reassign the value of largestFile to the the file with the longer or equal path length
         *
         * If another file existed in the array with the same size and path length as the
-        * first found largestFile, then the value of the largestFile will remain unchanged
-        * and the file found first will be returned.
+        * first found largestFile, then the value of the largestFile will be assigned to
+        * the file found last
          */
         File largestFile = null; //Method will return this variable
         long fileSize = 0; //Size of largestFile
@@ -70,8 +70,11 @@ public class LargestFile {
             }
             /*If another file exists with same size as largestFile, but with a longer path
             *   assign the value of largestFile to the file with longer path
+            *
+            * If they have the same path length too, assign the value of largestFile to the
+            * file found the last, and return it.
              */
-            else if (fileLength == fileSize && file.toPath().getNameCount() > largestFile.toPath().getNameCount()) {
+            else if (fileLength == fileSize && largestFile!= null && file.getAbsolutePath().length() >= largestFile.getAbsolutePath().length()) {
                 largestFile = file;
             }
         }
