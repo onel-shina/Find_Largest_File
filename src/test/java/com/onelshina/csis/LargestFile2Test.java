@@ -32,7 +32,7 @@ public class LargestFile2Test {
      * and it's subdirectories
      */
 
-    @SuppressWarnings({"SameParameterValue", "unchecked"})
+
     private static File findLargestFileTest(final Path path) {
         File largestFile = null;
         long largestFileSize = 0;
