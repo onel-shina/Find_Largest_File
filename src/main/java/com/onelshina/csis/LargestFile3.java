@@ -18,7 +18,7 @@ public class LargestFile3 {
         final Path path = Paths.get(args.length < 1 ? "." : args[0]);
         final File ex = findExtremeFile(path);
         if (ex != null) {
-            System.out.printf("Starting at : %s, the largest file was found here:\n%s\n its size is: %d\n",
+            System.out.printf("Starting at : %s, the largest file was found here:\n%s\n its size is: %d bytes\n",
                     path.toAbsolutePath().toString(),
                     ex.getAbsolutePath(),
                     ex.length());
