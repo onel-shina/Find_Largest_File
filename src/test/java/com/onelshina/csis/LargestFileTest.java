@@ -40,7 +40,6 @@ public class LargestFileTest {
      * and it's subdirectories
      */
 
-    @SuppressWarnings({"SameParameterValue", "unchecked"})
     private static ArrayList<File> findFilesListTest(final File dir) {
         final ArrayList<File> fileAndDirectories = new ArrayList<File>();
         ArrayList<File> files = new ArrayList<File>();
